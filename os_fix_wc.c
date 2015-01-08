@@ -73,7 +73,7 @@ int main(int argc, char *Argv[])
 			{
 					wc_temp[1]=0;
 			}
-			printf ("\n%d %d %d  -\n", wc_temp[0], wc_temp[1], i);
+			printf ("\n\t%d\t%d\t%d\t-\n", wc_temp[0], wc_temp[1], i);
 			wc[0]+=wc_temp[0];
 			wc[1]+=wc_temp[1];
 			wc[2]+=i;
@@ -92,7 +92,7 @@ int main(int argc, char *Argv[])
 	}
 	if (argc > 2)
 	{
-		printf ("%d %d %d  total\n",wc[0],wc[1],wc[2]);
+		printf ("\t%d\t%d\t%d\ttotal\n",wc[0],wc[1],wc[2]);
 	}
 	return 0;
 }
@@ -122,7 +122,8 @@ int File_Compiler(int wc[],int q,int argc,char *Argv[])
 	int eof = 0;
 	while(!eof) 
 	{
-		int status_read = read(fd, buff, 200);
+		int status_read = read(fd, buff, 1);
+		//printf("%d ",status_read);
 		if (status_read == -1) 
 		{
 			if(errno == EINTR) {
@@ -137,26 +138,14 @@ int File_Compiler(int wc[],int q,int argc,char *Argv[])
 			eof = 1;
 			break;
 		}
-			a=status_read;
-	}
-	i=0;
-	if (buff[0] == '\0') // If the file is empty
-	{
-		printf ("0 0 0  %s\n", Argv[q]);
-		return 0;
-	}
-	for (i=0;i<a;i++)
-	{
-		if (buff[i] == '\n')
+		if (buff[0] == '\n')
 		{
 			state = 1;
 			wc_temp[0]++;
-		}
-		else if (buff[i] == ' ' || buff[i] == '\t' || i==0)
+		}else if (buff[0] == ' ' || buff[0] == '\t' || i==0)
 		{
 			state = 1;
-		}
-		else
+		}else
 		{
 			if (state == 1)
 			{
@@ -164,10 +153,25 @@ int File_Compiler(int wc[],int q,int argc,char *Argv[])
 			}
 			state=0;
 		}
+		//printf("%s",buff);
+		i++;
+		a+=status_read;
+	}
+	i=0;
+	if (buff == "\0") // If the file is empty
+	{
+		printf ("\t0\t0\t0\t%s\n", Argv[q]);
+		int close_status = close(fd);
+		if (close_status == -1)
+		{
+			perror(Argv[q]);
+			return 1;
+		}
+		return 0;
 	}
 	wc_temp[2]=a;
 	wc[2]= wc[2]  + a;
-	printf ("%d %d %d  %s\n", wc_temp[0], wc_temp[1], wc_temp[2], Argv[q]);
+	printf ("\t%d\t%d\t%d\t%s\n", wc_temp[0], wc_temp[1], wc_temp[2], Argv[q]);
 	wc[0] = wc[0]  + wc_temp[0];
 	wc[1] = wc[1]  + wc_temp[1];
 	wc_temp[0]=0;
