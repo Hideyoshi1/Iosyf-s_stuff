@@ -37,7 +37,7 @@ char** parse_cmdline (const char* cmdline){
 		a=a+1;
 		pch = strtok (NULL, " ");
 	}
-	free (ok);
+	//free (ok);
 	//const char *file = on[0];
 	//printf("%s\n",file);
 	//execv(file[0], file);
