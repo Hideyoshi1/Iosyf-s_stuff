@@ -1,0 +1,18 @@
+exe: \
+compile
+compile: \
+hw.c ./hw
+	c99 hw.c
+text:
+	//--------------------------------------------
+	// NAME- Iosyf Saleh
+	// CLASS- XIb
+	// NUMBER- 18
+	// PROBLEM- #2
+	// FILE NAME- Makefile
+	// FILE PURPOSE-
+	// This is the makefile for the task for the OS homework
+	// It needs the following argument as input to work- make ./wc
+	// Then the program wc.c can be executed by writing -./wc (arguments)- in the terminal
+	//---------------------------------------------
+
