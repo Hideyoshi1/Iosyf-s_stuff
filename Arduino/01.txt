@@ -1,0 +1,58 @@
+int incomingByte = 0;   // for incoming serial data
+
+void setup() {
+        pinMode (11,OUTPUT);
+        Serial.begin(9600);     // opens serial port, sets data rate to 9600 bps
+}
+
+int i= 0;
+int intensity= 0;
+
+void ON(){
+  digitalWrite(11, HIGH);
+}
+
+void loop() {
+
+        // send data only when you receive data:
+        if (Serial.available() > 0) {
+                // read the incoming byte:
+                incomingByte = Serial.read();
+
+                // say what you got:
+                Serial.print("I received: ");
+                Serial.println(incomingByte, DEC);
+                switch(incomingByte){
+                  case 97:
+                    ON();
+                    break;
+                  case 98: 
+                    digitalWrite(11, LOW);
+                    break;
+                  case 99:
+                    intensity = 0;
+                    while(intensity < 250) {
+                       analogWrite(11,intensity);
+                       intensity += 5; 
+                       delay(100); 
+                    }
+                    break;
+                 case 100: 
+                   intensity = 255;
+                   while(intensity >= 0) {
+                     analogWrite(11,intensity);
+                       intensity -= 5; 
+                       delay(100); 
+                   }
+                   break;
+                case 101:
+                for (i=0;i<=10;i++){
+                  digitalWrite(11,HIGH);
+                  delay(500);
+                  digitalWrite(11,LOW); 
+                  delay(500);
+                }
+                break;
+             }
+        }
+}
