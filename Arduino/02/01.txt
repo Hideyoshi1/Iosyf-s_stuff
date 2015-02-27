@@ -1,0 +1,22 @@
+
+void setup() {
+Serial.begin(9600); // open serial port and set data rate to 9600 bps
+Serial.println("Thermistor temperature measurement:");
+Serial.println("\n Vo Rt T (C)");
+}
+
+void loop() {
+int ThermistorPin = 0; // Analog input pin for thermistor voltage
+int Vo; // Integer value of voltage reading
+float R = 9870.0; // Fixed resistance in the voltage divider
+float logRt,Rt,T;
+float c1 = 1.009249522e-03, c2 = 2.378405444e-04, c3 = 2.019202697e-07; // From datasheet
+Vo = analogRead(ThermistorPin);
+Rt = R*( 1023.0 / (float)Vo - 1.0 ); // Steinhaart equation -> http://en.wikipedia.org/wiki/Steinhart%E2%80%93Hart_equation
+logRt = log(Rt);
+T = ( 1.0 / (c1 + c2*logRt + c3*logRt*logRt*logRt ) ) - 273.15;
+Serial.print(" "); Serial.print(Vo);// Printing in serial monitor
+Serial.print(" "); Serial.print(Rt);
+Serial.print(" "); Serial.println(T);
+delay(1000);
+}
