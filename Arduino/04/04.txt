@@ -1,0 +1,34 @@
+#include <EEPROM.h>
+
+int address = 0;
+byte value;
+int i;
+void setup() {
+  Serial.begin(9600);
+  while (!Serial) {;}
+}
+
+void add_element() {
+  value = Serial.read();
+  
+  if(address >= 510){
+   Serial.print("Oh my gawd!!!!! SO big!!! Got put you down son :(");
+   address = 0;
+  }
+  //if (Serial.available()) Gotta check this out for next time :)
+  if (value != 255)
+    EEPROM.write(address++, value);
+}
+
+void loop() {
+
+  add_element();
+  Serial.print(address);
+  Serial.print("\t");
+  for(i = 0; i < address; i++) {
+     Serial.print((char)EEPROM.read(i));
+  }  
+  Serial.print("\n");
+  
+  delay(500);
+}
