@@ -1,0 +1,8 @@
+1.png	"HELLO WORLD"
+2.png	"I wanna go to school"	Go to school	Don't	Go Home
+Go to school{
+3.png	"you went to school"
+}
+Don't{
+4.png	"you didn't"
+}
